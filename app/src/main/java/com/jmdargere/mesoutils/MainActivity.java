@@ -19,6 +19,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.window.OnBackInvokedDispatcher;
 
 import java.net.InetSocketAddress;
@@ -46,14 +47,17 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle b) {
         super.onCreate(b);
         web = new WebView(this);
-        setContentView(web, new ViewGroup.LayoutParams(
+        FrameLayout root = new FrameLayout(this);
+        root.setBackgroundColor(Color.parseColor("#232a31"));
+        root.addView(web, new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        setContentView(root);
 
         web.setBackgroundColor(Color.parseColor("#232a31"));
 
         // Android 15+ : l'appli est dessinee sous les barres systeme -> on laisse la place
         if (Build.VERSION.SDK_INT >= 30) {
-            web.setOnApplyWindowInsetsListener((v, insets) -> {
+            root.setOnApplyWindowInsetsListener((v, insets) -> {
                 android.graphics.Insets bars = insets.getInsets(
                         WindowInsets.Type.systemBars() | WindowInsets.Type.ime());
                 v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
