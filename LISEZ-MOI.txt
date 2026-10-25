@@ -1,0 +1,9 @@
+MES OUTILS - vraie appli Android (projet)
+=========================================
+Ce dossier est un projet Android. GitHub le construit tout seul :
+1. Sur un ordinateur, crée un dépôt GitHub public (ex. "mes-outils").
+2. Glisse TOUT le contenu de ce dossier dans le dépôt (y compris le dossier .github).
+3. Onglet Actions : attends la coche verte (3 à 6 minutes).
+4. Onglet Releases : télécharge MES_OUTILS.apk sur le téléphone et installe-le.
+5. Dans Termux : echo "allow-external-apps = true" >> ~/.termux/termux.properties && termux-reload-settings
+6. Ouvre l'appli MES OUTILS et autorise "Exécuter des commandes Termux".
