@@ -6,6 +6,7 @@
 
     <queries>
         <package android:name="com.termux" />
+        <package android:name="com.jmdargere.telechargervideo" />
     </queries>
 
     <application

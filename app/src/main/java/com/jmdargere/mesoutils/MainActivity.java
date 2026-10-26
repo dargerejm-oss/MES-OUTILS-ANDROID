@@ -38,6 +38,16 @@ public class MainActivity extends Activity {
     static final String CMD = "cd /storage/emulated/0/Download/MES_OUTILS_ANDROID && nohup "
             + TERMUX_BIN + "/python hub.py >/dev/null 2>&1 &";
 
+    static final String TV_PKG = "com.jmdargere.telechargervideo";
+    // Barre verte fixe en bas de l'accueil : ouvre l'appli TELECHARGER VIDEO
+    static final String BARRE_JS = "(function(){if(document.getElementById('tvbar'))return;"
+            + "var a=document.createElement('a');a.id='tvbar';a.href='tv://open';"
+            + "a.textContent='\u2B07  T\u00C9L\u00C9CHARGER VID\u00C9O';"
+            + "a.style.cssText='position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;"
+            + "background:#2e9e44;color:#fff;text-align:center;font:800 20px system-ui,sans-serif;"
+            + "text-decoration:none;border-radius:16px;padding:18px;box-shadow:0 4px 14px rgba(0,0,0,.4)';"
+            + "document.body.appendChild(a);document.body.style.paddingBottom='100px';})();";
+
     private WebView web;
     private ValueCallback<Uri[]> filePicker;
     private final Handler ui = new Handler(Looper.getMainLooper());
@@ -92,7 +102,18 @@ public class MainActivity extends Activity {
                     go();
                     return true;
                 }
+                if (u.startsWith("tv://")) {
+                    ouvrirTelechargerVideo();
+                    return true;
+                }
                 return false;
+            }
+
+            @Override
+            public void onPageFinished(WebView v, String url) {
+                if (url != null && url.startsWith(HUB) && v.getProgress() == 100) {
+                    v.evaluateJavascript(BARRE_JS, null);
+                }
             }
 
             @Override
@@ -186,6 +207,16 @@ public class MainActivity extends Activity {
                 busy = false;
             }
         }).start();
+    }
+
+    private void ouvrirTelechargerVideo() {
+        Intent i = getPackageManager().getLaunchIntentForPackage(TV_PKG);
+        if (i == null) {
+            android.widget.Toast.makeText(this,
+                    "L'appli TÉLÉCHARGER VIDÉO n'est pas installée", android.widget.Toast.LENGTH_LONG).show();
+            return;
+        }
+        startActivity(i);
     }
 
     private boolean startHub() {
